@@ -70,13 +70,13 @@ void ErsteLokZeile()
 {  
   tft.setCursor(0,120);
   if(geschwLok1Aktiv){tft.setTextColor(ST77XX_GREEN);}  // Andert die Textfarbe auf Grün wenn die lok angewählt ist
-  if(auswahlHauptAnzeige == 2) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 2 = Mitte,Links) 
+  if(auswahlHauptAnzeige == 1) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 2 = Mitte,Links) 
   tft.print(lokCharArray[l1][0]);
   tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 
 
   tft.setCursor((80*3)+3,120);
-  if(auswahlHauptAnzeige == 5) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Mitte,Rechts)
+  if(auswahlHauptAnzeige == 4) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Mitte,Rechts)
   tft.println(lokCharArray[l1][l1z]);
   tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 }
@@ -85,13 +85,13 @@ void ZweiteLokZeile()
 {
   tft.setCursor(0,172);
   if(geschwLok2Aktiv){tft.setTextColor(ST77XX_GREEN);}  // Andert die Textfarbe auf Grün wenn die lok angewählt ist
-  if(auswahlHauptAnzeige == 3) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Unten,Links)
+  if(auswahlHauptAnzeige == 2) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Unten,Links)
   tft.print(lokCharArray[l2][0]);
   tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 
 
   tft.setCursor((80*3)+3,172);
-  if(auswahlHauptAnzeige == 6) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 6 = Unten,Rechts)
+  if(auswahlHauptAnzeige == 5) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 6 = Unten,Rechts)
   tft.println(lokCharArray[l2][l2z]);
   tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 }
@@ -110,7 +110,9 @@ void GeschwindigkeitAnzeigen()
 }
 
 void StandardAnzeige()
-{  
+{ 
+  bool standardAnzeigeErsterZyklus = true;
+
   tft.fillScreen(ST77XX_BLACK);
   
   tft.setRotation(1);
@@ -137,80 +139,45 @@ void StandardAnzeige()
   tft.print("Geschw.:");
   tft.setTextSize(1);
 
-  // _____________Weichen Geschalten____________________________
-  tft.setCursor(30,60);
-  tft.print(w1s ? "|":"/"); // Zustand Weiche/Signal/... 1
-
-  tft.setCursor(270,60);
-  tft.print(w2s ? "|":"/"); // Zustand Weiche/Signal/... 2
-
- 
-  // ____________LOK 1 Funktionen______________________________
-  tft.setCursor((80)+3,120);
-  tft.println(lokCharArray[l1][1]);
-
-  tft.setCursor((80)+3,140);
-  tft.print(l1F1s ? "Ein":"Aus");
-
-
-  tft.setCursor((80*2)+3,120);
-  tft.println(lokCharArray[l1][2]);
-
-  tft.setCursor((80*2)+3,140);
-  tft.print(l1F2s ? "Ein":"Aus");
-
-
-  tft.setCursor((80*3)+3,140);
-  tft.print(l1Zs ? "Ein":"Aus"); 
-
-  // ______________LOK 2 Funktionen______________________
-  tft.setCursor((80)+3,172);
-  tft.println(lokCharArray[l2][1]);
-
-  tft.setCursor((80)+3,190);
-  tft.print(l2F1s ? "Ein":"Aus");
-
-
-  tft.setCursor((80*2)+3,172);
-  tft.println(lokCharArray[l2][2]);
-
-  tft.setCursor((80*2)+3,190);
-  tft.print(l2F2s ? "Ein":"Aus");
-
-
-  tft.setCursor((80*3)+3,190);
-  tft.print(l2Zs ? "Ein":"Aus");
-  
-
 
   while (imAuswahlMenue == false)
   {
 
     MenueRad();
 
-    // Zeile 1 Weiche 1| Geschwindigkeit | Weiche 2
-    tft.setCursor(15,40);
-    if(auswahlHauptAnzeige == 1) 
-    {tft.setTextColor(ST77XX_RED);}  // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 1 = Oben,Links)
-    tft.print(weicheCharArray[w1]);     // Name Weiche/Signal/... 1
-    tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
+    if(tasterLokAktivGedrueckt || standardAnzeigeErsterZyklus || auswahlHauptAnzeige != -1 || radInaktivEinzelAktualisierung)
+    {
+      if(standardAnzeigeErsterZyklus || auswahlHauptAnzeige != -1 || radInaktivEinzelAktualisierung)
+      {
+        // Zeile 1 Weiche 1| Geschwindigkeit | Weiche 2
+        tft.setCursor(15,40);
+        if(auswahlHauptAnzeige == 0) 
+        {tft.setTextColor(ST77XX_RED);}  // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 1 = Oben,Links)
+        tft.print(weicheCharArray[w1]);     // Name Weiche/Signal/... 1
+        tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
+
+
+        tft.setCursor((80*3)+18,40);
+        if(auswahlHauptAnzeige == 3)
+        {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 4 = Oben,Rechts)
+        tft.print(weicheCharArray[w2]);     // Name Weiche/Signal/... 2
+        tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
+
+        radInaktivEinzelAktualisierung = false;
+      }
+
+      //Zeile 2 Lok 1
+      ErsteLokZeile();
+
+      //Zeile 3 Lok 2
+      ZweiteLokZeile();
+      tasterLokAktivGedrueckt = false;
+    }
 
     GeschwindigkeitAnzeigen();
 
-    tft.setCursor((80*3)+18,40);
-    if(auswahlHauptAnzeige == 4)
-    {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 4 = Oben,Rechts)
-    tft.print(weicheCharArray[w2]);     // Name Weiche/Signal/... 2
-    tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 
-    //Zeile 2 Lok 1
-    ErsteLokZeile();
-
-    //Zeile 3 Lok 2
-    ZweiteLokZeile();
-
-
-    if(tasterBetaetigt == true)
+    if(tasterBetaetigt || standardAnzeigeErsterZyklus)
     {
       // ______________Weichen Aktualisieren_______________________
       //tft.fillRect(0, 56, 78, 16, ST77XX_BLACK); // Löscht ein 40x25 Pixel großes Rechteck ab (185, 25)
@@ -317,6 +284,7 @@ void StandardAnzeige()
       tasterBetaetigt = false;
     }
 
+    standardAnzeigeErsterZyklus = false;
   }
 }
 
@@ -488,33 +456,33 @@ int ZusatzAendern(int lokNr, int arrayNr)
 // Methode um Destzustellen ob man im Auswahlmenü ist oder nicht 
 void DisplayAnzeignAuswahl()
 {
-  if((auswahlHauptAnzeige != 0) && (imAuswahlMenue == true)) // Hier muss noch etwas für den Encoder Taster rein
+  if((auswahlHauptAnzeige != -1) && (imAuswahlMenue == true)) // Hier muss noch etwas für den Encoder Taster rein
   {
     switch (auswahlHauptAnzeige)
     {
-      case 1:
+      case 0:
         w1 = WeicheAendern(w1);
         break;
-      case 2:
+      case 1:
         l1F1s = false;
         l1F2s = false;
         l1Zs = false;
         l1 = LokAendern(l1);
         break;
-      case 3:
+      case 2:
         l2F1s = false;
         l2F2s = false;
         l2Zs = false;
         l2 = LokAendern(l2);;
         break;
-      case 4:     
+      case 3:     
         w2 = WeicheAendern(w2);
         break;
-      case 5:
+      case 4:
         l1Zs = false;
         l1z = ZusatzAendern(l1,l1z);
         break;
-      case 6:
+      case 5:
         l2Zs = false;
         l2z = ZusatzAendern(l2,l2z);
         break;

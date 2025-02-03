@@ -7,6 +7,7 @@ bool geschwLok2Aktiv = false;
 bool lok1Richtung = true;
 bool lok2Richtung = true;
 bool tasterBetaetigt = false;
+bool tasterLokAktivGedrueckt = false;
 
 int geschwAktuell = 0;
 int geschwLok1 = 0;
@@ -177,6 +178,8 @@ void EingabeErkennen()
     if(DebounceTaster(TASTER_LOK1_AKTIV, 5)) // Lok 1 Geschwindigkeit Aktivieren/Deaktivieren 
     {
       geschwLok1Aktiv = !geschwLok1Aktiv;
+
+      tasterLokAktivGedrueckt = true;
     }
   #pragma endregion
 
@@ -211,6 +214,8 @@ void EingabeErkennen()
     if(DebounceTaster(TASTER_LOK2_AKTIV, 9)) // Lok 1 Geschwindigkeit Aktivieren/Deaktivieren 
     {
       geschwLok2Aktiv = !geschwLok2Aktiv;
+
+      tasterLokAktivGedrueckt = true;
     }
   #pragma endregion
     
@@ -271,6 +276,7 @@ const unsigned long timeout = 5000; // Zeitlimit für Inaktivität (in ms)
 bool startwertSetzen = false;  // Flag zum Setzen des Startwerts
 int auswahlHauptAnzeige = 0;
 int alterEncoderWert = 0;
+bool radInaktivEinzelAktualisierung = false;
 
 void MenueRad() 
 {
@@ -278,7 +284,7 @@ void MenueRad()
 
   if (!imAuswahlMenue) 
   {
-    auswahlHauptAnzeige = EncoderEinlesen(1, 6, auswahlHauptAnzeige);
+    auswahlHauptAnzeige = EncoderEinlesen(0, 5, auswahlHauptAnzeige);
 
     // Wenn der Encoder-Wert sich geändert hat
   if(auswahlHauptAnzeige != alterEncoderWert)
@@ -288,10 +294,11 @@ void MenueRad()
   }
 
     // Wenn der Encoder 5 Sekunden lang nicht gedreht wurde
-    if ((auswahlHauptAnzeige != 0) && (currentTime - lastTurnTime > timeout)) 
+    if ((auswahlHauptAnzeige != -1) && (currentTime - lastTurnTime > timeout)) 
     {
-      auswahlHauptAnzeige = 0; // Setze auswahlHauptAnzeige auf 0
+      auswahlHauptAnzeige = -1; // Setze auswahlHauptAnzeige auf 0
       startwertSetzen = false;
+      radInaktivEinzelAktualisierung = true;
     }
   }
   else
@@ -300,7 +307,7 @@ void MenueRad()
   }
 
   // Wenn der Taster gedrückt wird, gehe ins Auswahlmenü
-  if ((auswahlHauptAnzeige > 0 && auswahlHauptAnzeige <= 6) && DebounceTaster(ROTARY_ENCODER_BUTTON_PIN, 10))
+  if ((auswahlHauptAnzeige >= 0 && auswahlHauptAnzeige <= 5) && DebounceTaster(ROTARY_ENCODER_BUTTON_PIN, 10))
   {
     imAuswahlMenue = true;
   }

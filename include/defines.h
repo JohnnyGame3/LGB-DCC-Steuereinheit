@@ -90,6 +90,8 @@ extern bool startwertSetzen;
 extern bool imAuswahlMenue; // Zum Feststellen ob Mann sich in einem Auswahl Menü Befindet oder nicht
 extern int auswahlHauptAnzeige;
 extern bool tasterBetaetigt;
+extern bool tasterLokAktivGedrueckt;
+extern bool radInaktivEinzelAktualisierung;
 
 
 const unsigned long DEBOUNCE_ZEIT = 200; // Globale Debounce-Zeit in Millisekunden
