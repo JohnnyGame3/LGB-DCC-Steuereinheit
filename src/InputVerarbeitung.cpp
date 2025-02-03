@@ -274,7 +274,7 @@ const unsigned long timeout = 5000; // Zeitlimit für Inaktivität (in ms)
 
 
 bool startwertSetzen = false;  // Flag zum Setzen des Startwerts
-int auswahlHauptAnzeige = 0;
+int auswahlHauptAnzeige = -1;
 int alterEncoderWert = 0;
 bool radInaktivEinzelAktualisierung = false;
 

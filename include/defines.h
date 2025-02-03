@@ -54,7 +54,7 @@ const int POTI = 18;       //Potty input für Geschwindigkeit
 // Multifunktions Rad
 #define ROTARY_ENCODER_A_PIN 9
 #define ROTARY_ENCODER_B_PIN 10
-#define ROTARY_ENCODER_BUTTON_PIN 13
+#define ROTARY_ENCODER_BUTTON_PIN 13 // Taster ders Encoders
 #define ROTARY_ENCODER_VCC_PIN -1
 #define ROTARY_ENCODER_STEPS 4
 
@@ -86,17 +86,17 @@ extern bool geschwLok2Aktiv;    // Zum Feststellen ob Lok 2 Geschwindigkeitsänd
 extern bool lok1Richtung;   // Zum Festlegen der Aktuellen Fahrtrichtung der 1.Lok
 extern bool lok2Richtung;   // Zum Festlegen der Aktuellen Farhtrichtung der 2.Lok
 
-extern bool startwertSetzen;
+extern bool startwertSetzen;    // Muss Auserhalb der Encoder schleife sitzen um einen Startwert des encoders einzustellen
 extern bool imAuswahlMenue; // Zum Feststellen ob Mann sich in einem Auswahl Menü Befindet oder nicht
-extern int auswahlHauptAnzeige;
-extern bool tasterBetaetigt;
-extern bool tasterLokAktivGedrueckt;
-extern bool radInaktivEinzelAktualisierung;
+extern int auswahlHauptAnzeige; // Int Wert der Bestimmt was gerade ausewählt ist zum Ändrn
+extern bool tasterBetaetigt;    // true wenn ein Taster Betätigt wurde
+extern bool tasterLokAktivGedrueckt;    // true wenn ein Lok Anwahl taster betätigt wurde
+extern bool radInaktivEinzelAktualisierung; // bool für die auswahlmöglichkeiten nochmal zu aktualisieren wenn der Encoder "Inaktiv" geworden ist 
 
 
 const unsigned long DEBOUNCE_ZEIT = 200; // Globale Debounce-Zeit in Millisekunden
-const int TFT_BREITE = 320;
-const int TFT_HOEHE = 240;
+const int TFT_BREITE = 320; // Breite des TFT Displays
+const int TFT_HOEHE = 240;  // Höhe des TFT Displays
 
 // Globale Instanzen deklarieren (nicht definieren!)
 extern LOK lok1;
