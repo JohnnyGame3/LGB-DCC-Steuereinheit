@@ -139,6 +139,21 @@ void StandardAnzeige()
   tft.print("Geschw.:");
   tft.setTextSize(1);
 
+   // ____________LOK 1 Funktionen______________________________
+  tft.setCursor((80)+3,120);
+  tft.println(lokCharArray[l1][1]);
+
+  tft.setCursor((80*2)+3,120);
+  tft.println(lokCharArray[l1][2]);
+
+  // ______________LOK 2 Funktionen______________________
+  tft.setCursor((80)+3,172);
+  tft.println(lokCharArray[l2][1]);
+
+  tft.setCursor((80*2)+3,172);
+  tft.println(lokCharArray[l2][2]);
+
+
 
   while (imAuswahlMenue == false)
   {
@@ -224,10 +239,10 @@ void StandardAnzeige()
       
       tft.setTextColor(ST77XX_BLACK);
       tft.print("Ein");
-            tft.setCursor((80*2)+3,140);
+      tft.setCursor((80*2)+3,140);
       tft.print("Aus");
       tft.setTextColor(ST77XX_WHITE);
-            tft.setCursor((80*2)+3,140);
+      tft.setCursor((80*2)+3,140);
 
       tft.print(l1F2s ? "Ein":"Aus");
 
@@ -236,10 +251,10 @@ void StandardAnzeige()
 
       tft.setTextColor(ST77XX_BLACK);
       tft.print("Ein");
-            tft.setCursor((80*3)+3,140);
+      tft.setCursor((80*3)+3,140);
       tft.print("Aus");
       tft.setTextColor(ST77XX_WHITE);
-            tft.setCursor((80*3)+3,140);
+      tft.setCursor((80*3)+3,140);
 
       tft.print(l1Zs ? "Ein":"Aus");
 
@@ -250,10 +265,10 @@ void StandardAnzeige()
 
       tft.setTextColor(ST77XX_BLACK);
       tft.print("Ein");
-            tft.setCursor((80)+3,190);
+      tft.setCursor((80)+3,190);
       tft.print("Aus");
       tft.setTextColor(ST77XX_WHITE);
-            tft.setCursor((80)+3,190);
+      tft.setCursor((80)+3,190);
 
       tft.print(l2F1s ? "Ein":"Aus");
 
@@ -262,10 +277,10 @@ void StandardAnzeige()
 
       tft.setTextColor(ST77XX_BLACK);
       tft.print("Ein");
-            tft.setCursor((80*2)+3,190);
+      tft.setCursor((80*2)+3,190);
       tft.print("Aus");
       tft.setTextColor(ST77XX_WHITE);
-            tft.setCursor((80*2)+3,190);      
+      tft.setCursor((80*2)+3,190);      
 
       tft.print(l2F2s ? "Ein":"Aus");
 
@@ -274,10 +289,10 @@ void StandardAnzeige()
 
       tft.setTextColor(ST77XX_BLACK);
       tft.print("Ein");
-            tft.setCursor((80*3)+3,190);
+      tft.setCursor((80*3)+3,190);
       tft.print("Aus");
       tft.setTextColor(ST77XX_WHITE);
-            tft.setCursor((80*3)+3,190);
+      tft.setCursor((80*3)+3,190);
 
       tft.print(l2Zs ? "Ein":"Aus");
 

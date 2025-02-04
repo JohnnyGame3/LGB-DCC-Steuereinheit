@@ -45,7 +45,18 @@ void createTask(void (*taskFunction)(void *), const char *taskName, uint32_t sta
 
 void setup() 
 {
-  Serial.begin(115200);
+  for(int i = 4; i <= 8; i++)
+  {
+    pinMode(i,INPUT_PULLUP);
+  }
+  for(int i = 14; i <= 17; i++)
+  {
+    pinMode(i,INPUT_PULLUP);
+  }
+  pinMode(TASTER_LOK2_AKTIV,INPUT_PULLUP);
+  pinMode(POTI, INPUT_PULLUP);
+  
+  //Serial.begin(115200);
   
   // Setze den ESP32 als Wi-Fi Station
   WiFi.mode(WIFI_STA);
@@ -60,7 +71,7 @@ void setup()
   // Initialisiere ESP-NOW
   if (esp_now_init() != ESP_OK) 
   {
-    Serial.println("Fehler beim Initialisieren von ESP-NOW");
+    //Serial.println("Fehler beim Initialisieren von ESP-NOW");
     return;
   }
 
@@ -74,17 +85,17 @@ void setup()
 
   if (esp_now_add_peer(&peerInfo) != ESP_OK) 
   {
-    Serial.println("Fehler beim Hinzufügen des Empfängers");
+    //Serial.println("Fehler beim Hinzufügen des Empfängers");
     return;
   }
 
-  Serial.println("Sender bereit.");
+  //Serial.println("Sender bereit.");
 
   // Tasks erstellen
   createTask(LoopCore0DCC, "TaskCore0", 10000, 1, 0); // Task auf Core 0
   createTask(LoopCore1ESPNow, "TaskCore1", 10000, 1, 1); // Task auf Core 1
 
-
+/*
   for(int i = 4; i <= 8; i++)
   {
     pinMode(i,INPUT_PULLUP);
@@ -96,7 +107,7 @@ void setup()
   
   pinMode(TASTER_LOK2_AKTIV,INPUT_PULLUP);
   pinMode(POTI, INPUT_PULLUP);
-
+*/
 }
 
 

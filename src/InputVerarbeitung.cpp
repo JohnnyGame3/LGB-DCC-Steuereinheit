@@ -135,7 +135,6 @@ void EingabeErkennen()
       weiche1.zustand = w1s;  // Ändert den Zustand der 1.Weiche
       SerialisierenUndSenden(weiche1);  // Daten der ersten Weiche senden
       tasterBetaetigt = true;
-      Serial.println(w1s);
     }
     if(DebounceTaster(TASTER_W2, 1))    // Weiche 2
     {

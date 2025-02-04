@@ -52,7 +52,7 @@ const int TASTER_LOK2_AKTIV = 47; // Taster zum AKtivieren der 2.Lok
 const int POTI = 18;       //Potty input für Geschwindigkeit 
 
 // Multifunktions Rad
-#define ROTARY_ENCODER_A_PIN 9
+const int ROTARY_ENCODER_A_PIN = 9;
 #define ROTARY_ENCODER_B_PIN 10
 #define ROTARY_ENCODER_BUTTON_PIN 13 // Taster ders Encoders
 #define ROTARY_ENCODER_VCC_PIN -1
