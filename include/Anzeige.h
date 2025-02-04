@@ -21,7 +21,9 @@ void ErsteLokZeile();
 void ZweiteLokZeile();
 void GeschwindigkeitAnzeigen();
 void StandardAnzeige();
+void StandardAnzeigeVorZeichnen();
 
+void AuswahlMenueVorZeichnen(); // Methode um das Auswahl-Menü Vor zu Zeichnen
 int WeicheAendern(int arrayNr);
 int LokAendern(int arrayNr);
 int ZusatzAendern(int lokNr, int arrayNr);

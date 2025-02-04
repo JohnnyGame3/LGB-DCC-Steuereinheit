@@ -59,8 +59,8 @@ const int ROTARY_ENCODER_A_PIN = 9;
 #define ROTARY_ENCODER_STEPS 4
 
 // TFT Display
-#define TFT_DC 2
-#define TFT_CS 1
+#define TFT_DC 38
+#define TFT_CS 37
 #define TFT_MOSI 11
 #define TFT_SCK 12
 
