@@ -12,9 +12,14 @@ const uint8_t receiverAddress[] = {0x98, 0x3D, 0xAE, 0xEB, 0x04, 0x74};  // Mac 
 
 //const uint8_t receiverAddress[] = {0x93, 0x3D, 0xAE, 0xEC, 0xBE, 0xDC};
 
+// Array Constanten
+const int MAX_ZEILEN = 100;
+const int MAX_SPALTEN_LOK = 20;
+int LOK_ZEILEN_ANZAHL = 0;
+
 // Arrays 
-extern int intArray[][10];
-extern const char* lokCharArray[][10];
+extern int intArray[][MAX_SPALTEN_LOK/2];
+extern const char* lokCharArray[][MAX_SPALTEN_LOK/2];
 extern int weicheIntArray[];
 extern const char* weicheCharArray[];
 
@@ -53,22 +58,22 @@ const int POTI = 18;       //Potty input für Geschwindigkeit
 
 // Multifunktions Rad
 const int ROTARY_ENCODER_A_PIN = 9;
-#define ROTARY_ENCODER_B_PIN 10
-#define ROTARY_ENCODER_BUTTON_PIN 13 // Taster ders Encoders
-#define ROTARY_ENCODER_VCC_PIN -1
-#define ROTARY_ENCODER_STEPS 4
+const int  ROTARY_ENCODER_B_PIN = 10;
+const int ROTARY_ENCODER_BUTTON_PIN = 13; // Taster ders Encoders
+const int ROTARY_ENCODER_VCC_PIN = -1;
+const int  ROTARY_ENCODER_STEPS = 4;
 
 // TFT Display
-#define TFT_DC 38
-#define TFT_CS 37
-#define TFT_MOSI 11
-#define TFT_SCK 12
+const int TFT_DC = 38;
+const int TFT_CS = 37;
+const int TFT_MOSI = 11;
+const int TFT_SCK = 12;
 
 // SD-Kartenleser (SPI)
-#define SD_MISO 13    // SPI MISO
-#define SD_MOSI 11    // SPI MOSI (gemeinsam mit TFT)
-#define SD_SCK 12     // SPI SCK (gemeinsam mit TFT)
-#define SD_CS   3     // Chip Select für SD-Karte
+const int SD_MISO = 13;    // SPI MISO
+const int SD_MOSI = 11;    // SPI MOSI (gemeinsam mit TFT)
+const int SD_SCK = 12;     // SPI SCK (gemeinsam mit TFT)
+const int SD_CS = 3;     // Chip Select für SD-Karte
 #pragma endregion
 
 // Variablen Für schalt-Zustände

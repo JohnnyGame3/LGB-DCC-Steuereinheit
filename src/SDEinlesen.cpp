@@ -13,9 +13,99 @@ int Array1DLaenge(const char* Array[])
 }
 
 
+void SetupSD()
+{
+  //Serial.println("Initializing SD card...");
+  if (!SD.begin(SD_CS)) 
+  {
+    //Serial.println("Card initialization failed!");
+    //tft.println("SD ERROR!");
+    while (true);
+  }
+  //Serial.println("SD OK");
+}
 
 
-const char* lokCharArray[][10] = 
+const int MAX_ZEILEN = 100;
+const int MAX_SPALTEN_LOK = 20;
+int LOK_ZEILEN_ANZAHL = 0;
+
+void SDLokEinlesen()
+{
+    File csvFile = SD.open("/Excel Lok Test CSV.csv");
+  if (!csvFile) 
+  {
+    //Serial.println("Fehler beim Öffnen der Datei!");
+    return;
+  }
+
+  Serial.println("Reading Excel Lok Test CSV.csv...");
+
+  // Erste Zeile ignorieren
+  if (csvFile.available()) {
+    csvFile.readStringUntil('\n');
+  }
+
+  bool KeineWeiterenZeilen = true;
+  int j = 0;
+
+  // Lesen der CSV-Daten
+  while (KeineWeiterenZeilen) {
+    if (!csvFile.available() || j >= MAX_ZEILEN) {  
+      KeineWeiterenZeilen = false;
+      break;
+    }
+
+    String line = csvFile.readStringUntil('\n');
+    line.trim();
+    
+    int i = 0;
+    int start = 0;
+    int index = 0;
+    bool isTextColumn = true;
+
+    while ((index = line.indexOf(';', start)) != -1 && i < MAX_SPALTEN_LOK) {
+      String value = line.substring(start, index);
+      value.trim();
+
+      if (isTextColumn) 
+      {
+        lokCharArray[j][i / 2] = strdup(value.c_str());  // String speichern
+      } 
+      else 
+      {
+        intArray[j][i / 2] = value.toInt();  // Integer speichern
+      }
+
+      isTextColumn = !isTextColumn;
+      start = index + 1;
+      i++;
+    }
+
+    // Letztes Element der Zeile speichern
+    if (i < MAX_SPALTEN_LOK) 
+    {
+      String value = line.substring(start);
+      value.trim();
+
+      if (isTextColumn) 
+      {
+        lokCharArray[j][i / 2] = strdup(value.c_str());
+      } else {
+        intArray[j][i / 2] = value.toInt();
+      }
+    }
+
+    j++;  // Nächste Zeile
+
+  }
+
+  csvFile.close();
+  LOK_ZEILEN_ANZAHL = j;  // Anzahl der eingelesenen Zeilen speichern
+}
+
+
+const char* lokCharArray[][MAX_SPALTEN_LOK/2] = 
 {
   {"/", "/", "/", "/", "/", "/", "/", "/", "/", "/"},
   {"Mallet", "Licht", "Sound", "Steckdose", "Dampf", "/", "/", "/", "/", "/"},
@@ -26,7 +116,7 @@ const char* lokCharArray[][10] =
   {"/", "/", "/", "/", "/", "/", "/", "/", "/", "/"}
 };
 
-int intArray[][10] =
+int intArray[][MAX_SPALTEN_LOK/2] =
 {
   {0,0,0,0,0,0,0,0,0,0},
   {4,0,1,2,3,0,0,0,0,0},

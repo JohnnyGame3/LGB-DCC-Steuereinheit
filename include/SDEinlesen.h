@@ -3,9 +3,10 @@
 
 #include <Arduino.h>
 #include "defines.h"
+#include <SD.h>
 
 int Array1DLaenge(const char* Array[]);
-
-
+void SetupSD();
+void SDLokEinlesen();
 
 #endif  // End-Guard: Endet, falls SDEINLESEN_H bereits definiert ist
