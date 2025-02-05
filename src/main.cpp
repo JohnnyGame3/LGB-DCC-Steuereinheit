@@ -61,6 +61,9 @@ void setup()
   // Setze den ESP32 als Wi-Fi Station
   WiFi.mode(WIFI_STA);
 
+  // Initialisiere SD-Karten Leser
+  //SetupSD();
+
   // Initialisiere Encoder
   EncoderSetup();
 
