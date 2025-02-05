@@ -8,5 +8,6 @@
 int Array1DLaenge(const char* Array[]);
 void SetupSD();
 void SDLokEinlesen();
+void SDWeicheEinlesen();
 
 #endif  // End-Guard: Endet, falls SDEINLESEN_H bereits definiert ist

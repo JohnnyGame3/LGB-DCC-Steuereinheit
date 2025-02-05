@@ -95,19 +95,6 @@ void setup()
   createTask(LoopCore0DCC, "TaskCore0", 10000, 1, 0); // Task auf Core 0
   createTask(LoopCore1ESPNow, "TaskCore1", 10000, 1, 1); // Task auf Core 1
 
-/*
-  for(int i = 4; i <= 8; i++)
-  {
-    pinMode(i,INPUT_PULLUP);
-  }
-  for(int i = 14; i <= 17; i++)
-  {
-    pinMode(i,INPUT_PULLUP);
-  }
-  
-  pinMode(TASTER_LOK2_AKTIV,INPUT_PULLUP);
-  pinMode(POTI, INPUT_PULLUP);
-*/
 }
 
 

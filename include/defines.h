@@ -15,7 +15,9 @@ const uint8_t receiverAddress[] = {0x98, 0x3D, 0xAE, 0xEB, 0x04, 0x74};  // Mac 
 // Array Constanten
 const int MAX_ZEILEN = 100;
 const int MAX_SPALTEN_LOK = 20;
-int LOK_ZEILEN_ANZAHL = 0;
+const int MAX_SPALTEN_WEICHEN = 100;
+extern int lokZeilenAnzahl;
+extern int weichenAnzahl;
 
 // Arrays 
 extern int intArray[][MAX_SPALTEN_LOK/2];

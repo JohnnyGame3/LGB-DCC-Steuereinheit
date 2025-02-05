@@ -1,5 +1,10 @@
 #include "SDEinlesen.h"
 
+
+int lokZeilenAnzahl = 0;
+int weichenAnzahl = 0;
+
+
 // Methode um die Länge eines 1D-Arrays Herauszufinden
 int Array1DLaenge(const char* Array[]) 
 {
@@ -26,9 +31,6 @@ void SetupSD()
 }
 
 
-const int MAX_ZEILEN = 100;
-const int MAX_SPALTEN_LOK = 20;
-int LOK_ZEILEN_ANZAHL = 0;
 
 void SDLokEinlesen()
 {
@@ -64,7 +66,8 @@ void SDLokEinlesen()
     int index = 0;
     bool isTextColumn = true;
 
-    while ((index = line.indexOf(';', start)) != -1 && i < MAX_SPALTEN_LOK) {
+    while ((index = line.indexOf(';', start)) != -1 && i < MAX_SPALTEN_LOK) 
+    {
       String value = line.substring(start, index);
       value.trim();
 
@@ -101,8 +104,73 @@ void SDLokEinlesen()
   }
 
   csvFile.close();
-  LOK_ZEILEN_ANZAHL = j;  // Anzahl der eingelesenen Zeilen speichern
+  lokZeilenAnzahl = j;  // Anzahl der eingelesenen Zeilen speichern
 }
+
+
+
+void SDWeicheEinlesen()
+{
+  File csvFile = SD.open("/Weichen CSV.csv");
+  if (!csvFile) 
+  {
+    //Serial.println("Fehler beim Öffnen der Datei!");
+    return;
+  }
+
+  Serial.println("Reading Weichen CSV.csv...");
+
+  // Erste Zeile ignorieren
+  if (csvFile.available()) 
+  {
+    csvFile.readStringUntil('\n');
+  }
+  
+    String line = csvFile.readStringUntil('\n');
+    line.trim();
+    
+    int i = 0;
+    int start = 0;
+    int index = 0;
+    bool isTextColumn = true;
+
+  while ((index = line.indexOf(';', start)) != -1 && i < MAX_SPALTEN_WEICHEN) 
+  {
+    String value = line.substring(start, index);
+    value.trim();
+
+    if (isTextColumn) 
+    {
+      weicheCharArray[i / 2] = strdup(value.c_str());  // String speichern
+    } 
+    else 
+    {
+      weicheIntArray[i / 2] = value.toInt();  // Integer speichern
+    }
+
+    isTextColumn = !isTextColumn;
+    start = index + 1;
+    i++;
+  }  
+
+  // Letztes Element der Zeile speichern
+  if (i < MAX_SPALTEN_WEICHEN) 
+  {
+    String value = line.substring(start);
+    value.trim();
+
+    if (isTextColumn) 
+    {
+      weicheCharArray[i / 2] = strdup(value.c_str());
+    } 
+    else 
+    {
+      weicheIntArray[i / 2] = value.toInt();
+    }
+  }
+  weichenAnzahl = i;
+}
+
 
 
 const char* lokCharArray[][MAX_SPALTEN_LOK/2] = 
