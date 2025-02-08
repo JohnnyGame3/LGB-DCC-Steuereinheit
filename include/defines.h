@@ -18,14 +18,14 @@ const int MAX_SPALTEN_LOK = 20;
 const int MAX_SPALTEN_WEICHEN = 100;
 extern int lokZeilenAnzahl;
 extern int weichenAnzahl;
+const std::string lokDateiPfad = "/Excel Lok Test CSV.csv";
+const std::string weichenDateiPfad = "/Excel Weichen Test CSV.csv";
 
 // Arrays 
 extern int intArray[][MAX_SPALTEN_LOK/2];
 extern const char* lokCharArray[][MAX_SPALTEN_LOK/2];
 extern int weicheIntArray[];
 extern const char* weicheCharArray[];
-
-//extern std::string stringArray[][10];
 
 
 // Array Werte Display
@@ -44,7 +44,7 @@ extern int letzteDisplayGeschw; // Geschwindigkeit die auf dem display angezeigt
 
 #pragma region // Pin Belegung
 
-#define ANZAHL_TASTER 11  // Anzahl der Taster anpassen
+const int ANZAHL_TASTER = 11;  // Anzahl der Taster anpassen
 // Taster Pin Belegung
 const int TASTER_W1 = 4;     //Taster Weiche/Signal 1
 const int TASTER_W2 = 5;     //Taster Weiche/Signal 2

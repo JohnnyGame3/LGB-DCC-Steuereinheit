@@ -541,7 +541,7 @@ int ZusatzAendern(int lokNr, int arrayNr)
     // Curser und Feld Hintergrund Schwartz
     tft.setCursor(3,48);
     tft.setTextSize(2);
-    tft.println(lokCharArray[lokNr][getWrappedIndex(temp,1,3,7)]);
+    tft.println(lokCharArray[lokNr][getWrappedIndex(temp,1,3,MAX_SPALTEN_LOK/2)]);
 
     tft.setCursor(3,110);
     tft.setTextSize(3);
@@ -549,11 +549,11 @@ int ZusatzAendern(int lokNr, int arrayNr)
     tft.setTextSize(2);
 
     tft.setCursor(3,175);
-    tft.println(lokCharArray[lokNr][getWrappedIndex(temp,-1,3,7)]);
+    tft.println(lokCharArray[lokNr][getWrappedIndex(temp,-1,3,MAX_SPALTEN_LOK/2)]);
     tft.setTextSize(1);
 
    
-    temp = EncoderEinlesen(3,7,temp);
+    temp = EncoderEinlesen(3,MAX_SPALTEN_LOK/2,temp);
 
     if(DebounceTaster(ROTARY_ENCODER_BUTTON_PIN, 10)) // MultiRad
     {

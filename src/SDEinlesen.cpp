@@ -34,14 +34,14 @@ void SetupSD()
 
 void SDLokEinlesen()
 {
-    File csvFile = SD.open("/Excel Lok Test CSV.csv");
+    File csvFile = SD.open(lokDateiPfad.c_str());
   if (!csvFile) 
   {
     //Serial.println("Fehler beim Öffnen der Datei!");
     return;
   }
 
-  Serial.println("Reading Excel Lok Test CSV.csv...");
+  //Serial.println("Reading Lok Liste...");
 
   // Erste Zeile ignorieren
   if (csvFile.available()) {
@@ -111,14 +111,14 @@ void SDLokEinlesen()
 
 void SDWeicheEinlesen()
 {
-  File csvFile = SD.open("/Weichen CSV.csv");
+  File csvFile = SD.open(weichenDateiPfad.c_str());
   if (!csvFile) 
   {
     //Serial.println("Fehler beim Öffnen der Datei!");
     return;
   }
 
-  Serial.println("Reading Weichen CSV.csv...");
+  //Serial.println("Reading Weichen Liste...");
 
   // Erste Zeile ignorieren
   if (csvFile.available()) 
