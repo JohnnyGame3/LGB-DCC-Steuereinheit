@@ -112,46 +112,37 @@ void GeschwindigkeitAnzeigen()
 
 void StandardAnzeigeVorZeichnen()
 {
-  // Oberen Bereich schwarz färben
-  tft.fillRect(0, 0, 80, 80, ST77XX_BLACK);
-    // Trennlinie 1 (Vertikal (Links))
-    tft.drawLine(80,0,80,80,ST77XX_CYAN);
 
-  // Oberen Bereich schwarz färben
-  tft.fillRect(81, 0, 240, 80, ST77XX_BLACK);
-    // Trennlinie 1 (Vertikal (Links))
-    tft.drawLine(240,0,240,80,ST77XX_CYAN);
+   // Oberen Bereich schwarz färben
+  tft.fillRect(0, 0, TFT_BREITE, 80, ST77XX_BLACK);
+  // Erste horizontale Trennlinie
+  tft.drawLine(0, 80, 320, 80, ST77XX_CYAN);
 
-  // Oberen Bereich schwarz färben
-  tft.fillRect(241, 0, 80, 80, ST77XX_BLACK);
+
+  // Bereich Mitte links
+  tft.fillRect(0, 81, TFT_BREITE, 80, ST77XX_BLACK);
+  // Zweite horizontale Trennlinie
+  tft.drawLine(0, 160, 320, 160, ST77XX_CYAN);
+
+
+  // Bereich unten links
+  tft.fillRect(0, 161, TFT_BREITE, 80, ST77XX_BLACK);
+
+      // Trennlinie 1 (Vertikal (Links))
+  tft.drawLine(80,0,80,240,ST77XX_CYAN);
+
+    // Trennlinie 2 (Vertikal (Rechts))
+  tft.drawLine(240,0,240,240,ST77XX_CYAN);
+
+    // Trennlinie 3 (Vertikal (Mitte))
+  tft.drawLine(160,80,160,240,ST77XX_CYAN);
+
 
   // Text "Geschw.: " schreiben
   tft.setTextColor(ST77XX_WHITE);
   tft.setTextSize(2);
   tft.setCursor(85, 46);
   tft.print("Geschw.:");
-
-  // Erste horizontale Trennlinie
-  tft.drawLine(0, 80, 320, 80, ST77XX_CYAN);
-
-
-  // Bereich Mitte links
-  tft.fillRect(0, 81, 80, 80, ST77XX_BLACK);
-    // Trennlinie 1 (Vertikal (Links))
-    tft.drawLine(80,81,80,160,ST77XX_CYAN);
-
-  // Bereich Mitte
-  tft.fillRect(81, 81, 80, 80, ST77XX_BLACK);
-    // Trennlinie 2 (Vertikal (Rechts))
-    tft.drawLine(160,81,160,160,ST77XX_CYAN);
-
-  // Bereich Mitte rechts
-  tft.fillRect(161, 81, 80, 80, ST77XX_BLACK);
-    // Trennlinie 3 (Vertikal (Mitte))
-    tft.drawLine(240,81,240,160,ST77XX_CYAN);
-
-  // Bereich unten links
-  tft.fillRect(241, 81, 80, 80, ST77XX_BLACK);
 
 
   // Überschriften schreiben
@@ -176,29 +167,6 @@ void StandardAnzeigeVorZeichnen()
   tft.setCursor((80 * 2) + 3, 120);
   tft.println(lokCharArray[l1][2]);
 
-  // Zweite horizontale Trennlinie
-  tft.drawLine(0, 160, 320, 160, ST77XX_CYAN);
-
-
-  // Bereich unten links
-  tft.fillRect(0, 161, 80, 80, ST77XX_BLACK);
-    // Trennlinie 1 (Vertikal (Links))
-    tft.drawLine(80,161,80,240,ST77XX_CYAN);
-
-  // Bereich unten Mitte links
-  tft.fillRect(81, 161, 80, 80, ST77XX_BLACK);
-    // Trennlinie 2 (Vertikal (Rechts))
-    tft.drawLine(160,161,160,240,ST77XX_CYAN);
-
-  // Bereich unten Mitte rechts
-  tft.fillRect(161, 161, 80, 80, ST77XX_BLACK);
-    // Trennlinie 3 (Vertikal (Mitte))
-    tft.drawLine(240,161,240,240,ST77XX_CYAN);
-
-  // Bereich unten rechts
-  tft.fillRect(241, 161, 80, 80, ST77XX_BLACK);
-
-
 
   // Lok 2 Funktionen mittig schreiben
   tft.setCursor(80 + 3, 172);
@@ -213,49 +181,6 @@ void StandardAnzeige()
   bool standardAnzeigeErsterZyklus = true;
 
   StandardAnzeigeVorZeichnen();
-
-/*
-  tft.fillScreen(ST77XX_BLACK);
-  
-  tft.setRotation(1);
-  tft.setTextColor(ST77XX_WHITE); // ändert den Anzeige Text auf Weiß
-
-  GitterZeichnen();
-
-    // __________________Überschriften__________________________
-  tft.setCursor(0,90);
-  tft.setTextSize(2);
-  tft.print("Lok");
-
-  tft.setCursor(80+3,90);
-  tft.print("Fav 1");
- 
-  tft.setCursor((80*2)+3,90);
-  tft.print("Fav 2");
-
-  tft.setCursor((80*3)+3,90);
-  tft.print("Zusatz");
-
-  // ____________Geschwindigkeit_______________________________
-  tft.setCursor(85,46);
-  tft.print("Geschw.:");
-  tft.setTextSize(1);
-
-   // ____________LOK 1 Funktionen______________________________
-  tft.setCursor((80)+3,120);
-  tft.println(lokCharArray[l1][1]);
-
-  tft.setCursor((80*2)+3,120);
-  tft.println(lokCharArray[l1][2]);
-
-  // ______________LOK 2 Funktionen______________________
-  tft.setCursor((80)+3,172);
-  tft.println(lokCharArray[l2][1]);
-
-  tft.setCursor((80*2)+3,172);
-  tft.println(lokCharArray[l2][2]);
-*/
-
 
   while (imAuswahlMenue == false)
   {
