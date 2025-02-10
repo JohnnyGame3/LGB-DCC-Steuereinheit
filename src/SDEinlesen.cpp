@@ -3,7 +3,12 @@
 
 int lokZeilenAnzahl = 0;
 int weichenAnzahl = 0;
-
+/*
+const char* lokCharArray[10][MAX_SPALTEN_LOK/2];
+int intArray[10][MAX_SPALTEN_LOK/2];
+const char* weicheCharArray[7];
+int weicheIntArray[7];
+*/
 
 // Methode um die Länge eines 1D-Arrays Herauszufinden
 int Array1DLaenge(const char* Array[]) 
@@ -23,11 +28,10 @@ void SetupSD()
   //Serial.println("Initializing SD card...");
   if (!SD.begin(SD_CS)) 
   {
-    //Serial.println("Card initialization failed!");
-    //tft.println("SD ERROR!");
+    Serial.println("Card initialization failed!");
     while (true);
   }
-  //Serial.println("SD OK");
+  Serial.println("SD OK");
 }
 
 
@@ -37,11 +41,11 @@ void SDLokEinlesen()
     File csvFile = SD.open(lokDateiPfad.c_str());
   if (!csvFile) 
   {
-    //Serial.println("Fehler beim Öffnen der Datei!");
+    Serial.println("Fehler beim Öffnen der Datei!");
     return;
   }
 
-  //Serial.println("Reading Lok Liste...");
+  Serial.println("Reading Lok Liste...");
 
   // Erste Zeile ignorieren
   if (csvFile.available()) {
@@ -172,8 +176,7 @@ void SDWeicheEinlesen()
 }
 
 
-
-const char* lokCharArray[][MAX_SPALTEN_LOK/2] = 
+const char* lokCharArray[100][MAX_SPALTEN_LOK/2] = 
 {
   {"/", "/", "/", "/", "/", "/", "/", "/", "/", "/"},
   {"Mallet", "Licht", "Sound", "Steckdose", "Dampf", "/", "/", "/", "/", "/"},
@@ -184,7 +187,7 @@ const char* lokCharArray[][MAX_SPALTEN_LOK/2] =
   {"/", "/", "/", "/", "/", "/", "/", "/", "/", "/"}
 };
 
-int intArray[][MAX_SPALTEN_LOK/2] =
+int intArray[100][MAX_SPALTEN_LOK/2] =
 {
   {0,0,0,0,0,0,0,0,0,0},
   {4,0,1,2,3,0,0,0,0,0},
@@ -195,12 +198,12 @@ int intArray[][MAX_SPALTEN_LOK/2] =
   {0,0,0,0,0,0,0,0,0,0}
 };
 
-const char* weicheCharArray[] =
+const char* weicheCharArray[50] =
 {
   "Weiche 1","Weiche 2","Weiche 3","Signal 1","-------",
 };
 
-int weicheIntArray[] =
+int weicheIntArray[50] =
 {
   129,130,131,132,133,
 };

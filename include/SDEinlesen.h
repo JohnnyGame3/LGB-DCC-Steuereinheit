@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "defines.h"
+#include <SPI.h>
 #include <SD.h>
 
 int Array1DLaenge(const char* Array[]);

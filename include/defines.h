@@ -61,7 +61,7 @@ const int POTI = 18;       //Potty input für Geschwindigkeit
 // Multifunktions Rad
 const int ROTARY_ENCODER_A_PIN = 9;
 const int  ROTARY_ENCODER_B_PIN = 10;
-const int ROTARY_ENCODER_BUTTON_PIN = 13; // Taster ders Encoders
+const int ROTARY_ENCODER_BUTTON_PIN = 48; // Taster ders Encoders
 const int ROTARY_ENCODER_VCC_PIN = -1;
 const int  ROTARY_ENCODER_STEPS = 4;
 

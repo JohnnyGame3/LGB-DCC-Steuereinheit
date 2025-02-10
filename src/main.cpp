@@ -14,7 +14,7 @@ void LoopCore0DCC(void *parameter)
   while (true)
   {
     EingabeErkennen();
-    vTaskDelay(2 / portTICK_PERIOD_MS);  // 5ms Pause
+    vTaskDelay(3 / portTICK_PERIOD_MS);  // 5ms Pause
   }
 }
  
@@ -24,7 +24,7 @@ void LoopCore1ESPNow(void *parameter)
   while(true)
   {
     DisplayAnzeignAuswahl();
-    //vTaskDelay(2 / portTICK_PERIOD_MS);  // 10ms Pause
+    vTaskDelay(1 / portTICK_PERIOD_MS);  // 10ms Pause
   }
 }
 
@@ -63,6 +63,8 @@ void setup()
 
   // Initialisiere SD-Karten Leser
   //SetupSD();
+  //SDLokEinlesen();
+  //SDWeicheEinlesen();
 
   // Initialisiere Encoder
   EncoderSetup();
