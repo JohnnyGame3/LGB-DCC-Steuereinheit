@@ -4,13 +4,13 @@
 #include "InputVerarbeitung.h"
 #include "Anzeige.h"
 
-
+bool taskStarten = false;
 
 
 // Funktion für die erste Loop (Core 0)
 void LoopCore0DCC(void *parameter)
 {
-  while (true)
+  while (taskStarten)
   {
     EingabeErkennen();
     vTaskDelay(3 / portTICK_PERIOD_MS);  // 5ms Pause
@@ -20,7 +20,7 @@ void LoopCore0DCC(void *parameter)
 // Funktion für die zweite Loop (Core 1)
 void LoopCore1ESPNow(void *parameter)
 {
-  while(true)
+  while(taskStarten)
   {
     DisplayAnzeignAuswahl();
     vTaskDelay(1 / portTICK_PERIOD_MS);  // 10ms Pause
@@ -75,6 +75,7 @@ void setup()
   CreateTask(LoopCore1ESPNow, "TaskCore1", 10000, 1, 1); // Task auf Core 1
 
   SetupESP_NOW();
+  taskStarten = true;
 }
 
 
