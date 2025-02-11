@@ -56,29 +56,32 @@ void setup()
   pinMode(TASTER_LOK2_AKTIV,INPUT_PULLUP);
   pinMode(POTI, INPUT_PULLUP);
   
+
+  // Initialisiere SD-Karten Leser
+  SetupSD();
+  delay(2000);
+  SDLokEinlesen();
+  SDWeicheEinlesen();
+
+  delay(500);  // 500 Millisekunden Pause
   //Serial.begin(115200);
   
   // Setze den ESP32 als Wi-Fi Station
   WiFi.mode(WIFI_STA);
-
-  // Initialisiere SD-Karten Leser
-  //SetupSD();
-  //SDLokEinlesen();
-  //SDWeicheEinlesen();
 
   // Initialisiere Encoder
   EncoderSetup();
 
   // Initialisiere Display
   displaySetup(); 
-
-
+ 
   // Initialisiere ESP-NOW
   if (esp_now_init() != ESP_OK) 
   {
     //Serial.println("Fehler beim Initialisieren von ESP-NOW");
     return;
   }
+  
 
   // Registriere den Callback für das Senden von Daten
   esp_now_register_send_cb(OnDataSent);   
@@ -105,7 +108,6 @@ void setup()
 
 void loop() 
 {
-  //EingabeErkennen();
   // Der normale loop()-Code bleibt leer oder wird nur minimal verwendet
 
 }

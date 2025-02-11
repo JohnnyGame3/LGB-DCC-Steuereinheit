@@ -1,13 +1,12 @@
-#include <Arduino.h>
 #include "Anzeige.h"
 
 int letzteDisplayGeschw = 0;
 
 
-int w1 = 0;      // Weiche/Signal Pos 1 (Oben Links)
-int w2 = 1;      // Weiche/Signal Pos 2 (Oben Rechts)
-int l1 = 4;      // Lok 1 (Mitte, Links/Mitte/Rechts)
-int l2 = 1;      // Lok 2 (Unten, Links/Mitte/Rechts)
+int w1 = 1;      // Weiche/Signal Pos 1 (Oben Links)
+int w2 = 2;      // Weiche/Signal Pos 2 (Oben Rechts)
+int l1 = 1;      // Lok 1 (Mitte, Links/Mitte/Rechts)
+int l2 = 2;      // Lok 2 (Unten, Links/Mitte/Rechts)
 int l1z = 3;     // Lok 1 Zusatzfunktion (Mitte Rechts)
 int l2z = 3;     // Lok 1 Zusatzfunktion (Unten Rechts)
 
@@ -22,13 +21,12 @@ bool l2Zs = false;
 
 bool testAktualisierung = false;
 
-Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCK);
+Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCK, -1);
+
 
 void displaySetup() 
 {
-  Wire.setPins(10, 8); // redefine first I2C port to be on pins 10/8
-  SPI.beginTransaction(SPISettings(40000000, MSBFIRST, SPI_MODE0)); // 40 MHz
-
+  //SPI.beginTransaction(SPISettings(40000000, MSBFIRST, SPI_MODE0)); // 40 MHz
   tft.init(TFT_HOEHE, TFT_BREITE);
   tft.setRotation(1);
   tft.fillScreen(ST77XX_BLACK);
@@ -70,13 +68,13 @@ void ErsteLokZeile()
 {  
   tft.setCursor(0,120);
   if(geschwLok1Aktiv){tft.setTextColor(ST77XX_GREEN);}  // Andert die Textfarbe auf Grün wenn die lok angewählt ist
-  if(auswahlHauptAnzeige == 1) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 2 = Mitte,Links) 
+  if(auswahlHauptAnzeige == 4) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 2 = Mitte,Links) 
   tft.print(lokCharArray[l1][0]);
   tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 
 
   tft.setCursor((80*3)+3,120);
-  if(auswahlHauptAnzeige == 4) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Mitte,Rechts)
+  if(auswahlHauptAnzeige == 1) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Mitte,Rechts)
   tft.println(lokCharArray[l1][l1z]);
   tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 }
@@ -85,13 +83,13 @@ void ZweiteLokZeile()
 {
   tft.setCursor(0,172);
   if(geschwLok2Aktiv){tft.setTextColor(ST77XX_GREEN);}  // Andert die Textfarbe auf Grün wenn die lok angewählt ist
-  if(auswahlHauptAnzeige == 2) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Unten,Links)
+  if(auswahlHauptAnzeige == 3) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Unten,Links)
   tft.print(lokCharArray[l2][0]);
   tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 
 
   tft.setCursor((80*3)+3,172);
-  if(auswahlHauptAnzeige == 5) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 6 = Unten,Rechts)
+  if(auswahlHauptAnzeige == 0) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 6 = Unten,Rechts)
   tft.println(lokCharArray[l2][l2z]);
   tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 }
@@ -193,14 +191,14 @@ void StandardAnzeige()
       {
         // Zeile 1 Weiche 1| Geschwindigkeit | Weiche 2
         tft.setCursor(15,40);
-        if(auswahlHauptAnzeige == 0) 
+        if(auswahlHauptAnzeige == 5) 
         {tft.setTextColor(ST77XX_RED);}  // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 1 = Oben,Links)
         tft.print(weicheCharArray[w1]);     // Name Weiche/Signal/... 1
         tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
 
 
         tft.setCursor((80*3)+18,40);
-        if(auswahlHauptAnzeige == 3)
+        if(auswahlHauptAnzeige == 2)
         {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 4 = Oben,Rechts)
         tft.print(weicheCharArray[w2]);     // Name Weiche/Signal/... 2
         tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
@@ -367,7 +365,7 @@ int WeicheAendern(int arrayNr)
 
     tft.setCursor(3,48);
     tft.setTextSize(2);
-    tft.println(weicheCharArray[getWrappedIndex(temp,1,0,arrayLaenge)]);
+    tft.println(weicheCharArray[getWrappedIndex(temp,-1,0,arrayLaenge)]);
 
     tft.setCursor(3,110);
     tft.setTextSize(3);
@@ -375,7 +373,7 @@ int WeicheAendern(int arrayNr)
     tft.setTextSize(2);
 
     tft.setCursor(3,175);
-    tft.println(weicheCharArray[getWrappedIndex(temp,-1,0,arrayLaenge)]);
+    tft.println(weicheCharArray[getWrappedIndex(temp,1,0,arrayLaenge)]);
     tft.setTextSize(1);
 
     temp = EncoderEinlesen(0,arrayLaenge,temp);
@@ -418,7 +416,7 @@ int LokAendern(int arrayNr)
 
     tft.setCursor(3,48);
     tft.setTextSize(2);
-    tft.println(lokCharArray[getWrappedIndex(temp,1,0,6)][0]);
+    tft.println(lokCharArray[getWrappedIndex(temp,-1,0,lokZeilenAnzahl)][0]);
 
     tft.setCursor(3,110);
     tft.setTextSize(3);
@@ -426,10 +424,10 @@ int LokAendern(int arrayNr)
     tft.setTextSize(2);
 
     tft.setCursor(3,175);
-    tft.println(lokCharArray[getWrappedIndex(temp,-1,0,6)][0]);
+    tft.println(lokCharArray[getWrappedIndex(temp,1,0,lokZeilenAnzahl)][0]);
     tft.setTextSize(1);
 
-    temp = EncoderEinlesen(0,6,temp);
+    temp = EncoderEinlesen(0,lokZeilenAnzahl,temp);
 
     if(DebounceTaster(ROTARY_ENCODER_BUTTON_PIN, 10)) // MultiRad
     {
@@ -466,7 +464,7 @@ int ZusatzAendern(int lokNr, int arrayNr)
     // Curser und Feld Hintergrund Schwartz
     tft.setCursor(3,48);
     tft.setTextSize(2);
-    tft.println(lokCharArray[lokNr][getWrappedIndex(temp,1,3,(MAX_SPALTEN_LOK/2)-3)]);
+    tft.println(lokCharArray[lokNr][getWrappedIndex(temp,-1,3,(MAX_SPALTEN_LOK/2)-3)]);
 
     tft.setCursor(3,110);
     tft.setTextSize(3);
@@ -474,7 +472,7 @@ int ZusatzAendern(int lokNr, int arrayNr)
     tft.setTextSize(2);
 
     tft.setCursor(3,175);
-    tft.println(lokCharArray[lokNr][getWrappedIndex(temp,-1,3,(MAX_SPALTEN_LOK/2)-3)]);
+    tft.println(lokCharArray[lokNr][getWrappedIndex(temp,1,3,(MAX_SPALTEN_LOK/2)-3)]);
     tft.setTextSize(1);
 
    
@@ -500,29 +498,29 @@ void DisplayAnzeignAuswahl()
   {
     switch (auswahlHauptAnzeige)
     {
-      case 0:
+      case 5:
         w1 = WeicheAendern(w1);
         break;
-      case 1:
+      case 4:
         l1F1s = false;
         l1F2s = false;
         l1Zs = false;
         l1 = LokAendern(l1);
         break;
-      case 2:
+      case 3:
         l2F1s = false;
         l2F2s = false;
         l2Zs = false;
         l2 = LokAendern(l2);;
         break;
-      case 3:     
+      case 2:     
         w2 = WeicheAendern(w2);
         break;
-      case 4:
+      case 1:
         l1Zs = false;
         l1z = ZusatzAendern(l1,l1z);
         break;
-      case 5:
+      case 0:
         l2Zs = false;
         l2z = ZusatzAendern(l2,l2z);
         break;

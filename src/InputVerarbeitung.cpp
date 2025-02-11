@@ -95,8 +95,8 @@ bool DebounceTaster(int pin, int index)
   return false;
 }
 
-  int deadZone = 150; // Totzone
-  int offset = -320;    // Offset für den Nullpunkt (nach rechts verschoben)
+  int deadZone = 200; // Totzone
+  int offset = -280;    // Offset für den Nullpunkt (nach rechts verschoben)
   int nullpunkt = 2048 + offset; // Neuer Nullpunkt mit Offset
 
 // Methoder um den Poti einzulesen und den wert in -28 bis 28 zu mappen

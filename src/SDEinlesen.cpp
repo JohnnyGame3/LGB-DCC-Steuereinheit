@@ -3,12 +3,12 @@
 
 int lokZeilenAnzahl = 0;
 int weichenAnzahl = 0;
-/*
-const char* lokCharArray[10][MAX_SPALTEN_LOK/2];
-int intArray[10][MAX_SPALTEN_LOK/2];
-const char* weicheCharArray[7];
-int weicheIntArray[7];
-*/
+
+const char* lokCharArray[MAX_ZEILEN][MAX_SPALTEN_LOK/2];
+int intArray[MAX_ZEILEN][MAX_SPALTEN_LOK/2];
+const char* weicheCharArray[MAX_SPALTEN_WEICHEN];
+int weicheIntArray[MAX_SPALTEN_WEICHEN];
+
 
 // Methode um die Länge eines 1D-Arrays Herauszufinden
 int Array1DLaenge(const char* Array[]) 
@@ -22,30 +22,39 @@ int Array1DLaenge(const char* Array[])
   return anzahlElemente;
 }
 
-
 void SetupSD()
 {
-  //Serial.println("Initializing SD card...");
-  if (!SD.begin(SD_CS)) 
-  {
-    Serial.println("Card initialization failed!");
-    while (true);
+  //Serial.println("Starte SD-Karten Initialisierung...");
+  SPI.begin();  // Sicherstellen, dass der SPI-Bus gestartet wird
+  bool sdInit = false;
+  for (int i = 0; i < 3; i++) 
+  {  // Maximal 3 Versuche
+    if (SD.begin(SD_CS)) 
+    {
+      sdInit = true;
+      //Serial.println("SD-Karte erfolgreich initialisiert!");
+      break;
+    }
+    //Serial.println("SD-Karte nicht erkannt, neuer Versuch in 500ms...");
+    delay(500);
   }
-  Serial.println("SD OK");
+
+  if (!sdInit) 
+  {
+    //Serial.println("FEHLER: SD-Karte konnte nicht initialisiert werden!");
+  }
 }
-
-
 
 void SDLokEinlesen()
 {
     File csvFile = SD.open(lokDateiPfad.c_str());
   if (!csvFile) 
   {
-    Serial.println("Fehler beim Öffnen der Datei!");
+    //Serial.println("Fehler beim Öffnen der Datei!");
     return;
   }
 
-  Serial.println("Reading Lok Liste...");
+  //Serial.println("Reading Lok Liste...");
 
   // Erste Zeile ignorieren
   if (csvFile.available()) {
@@ -108,7 +117,7 @@ void SDLokEinlesen()
   }
 
   csvFile.close();
-  lokZeilenAnzahl = j;  // Anzahl der eingelesenen Zeilen speichern
+  lokZeilenAnzahl = (j -1);  // Anzahl der eingelesenen Zeilen speichern
 }
 
 
@@ -175,7 +184,7 @@ void SDWeicheEinlesen()
   weichenAnzahl = i;
 }
 
-
+/*
 const char* lokCharArray[100][MAX_SPALTEN_LOK/2] = 
 {
   {"/", "/", "/", "/", "/", "/", "/", "/", "/", "/"},
@@ -207,3 +216,4 @@ int weicheIntArray[50] =
 {
   129,130,131,132,133,
 };
+*/

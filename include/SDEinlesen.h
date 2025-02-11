@@ -5,6 +5,7 @@
 #include "defines.h"
 #include <SPI.h>
 #include <SD.h>
+#include "FS.h"
 
 int Array1DLaenge(const char* Array[]);
 void SetupSD();
