@@ -1,7 +1,35 @@
 #include "defines.h"
 #include "ESPNowSenden.h"
 
+esp_now_peer_info_t peerInfo;
 
+void SetupESP_NOW()
+{
+  // Setze den ESP32 als Wi-Fi Station
+  WiFi.mode(WIFI_STA);
+
+
+  // Initialisiere ESP-NOW
+  if (esp_now_init() != ESP_OK) 
+  {
+    //Serial.println("Fehler beim Initialisieren von ESP-NOW");
+    return;
+  }  
+
+  // Registriere den Callback für das Senden von Daten
+  esp_now_register_send_cb(OnDataSent);   
+  
+  // Füge den Peer (Empfänger) hinzu
+  memcpy(peerInfo.peer_addr, receiverAddress, 6);
+  peerInfo.channel = 0;  // Kanal 0 verwenden
+  peerInfo.encrypt = false;
+
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) 
+  {
+    //Serial.println("Fehler beim Hinzufügen des Empfängers");
+    return;
+  }
+}
 
 // Callback für das Senden von Daten
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) 

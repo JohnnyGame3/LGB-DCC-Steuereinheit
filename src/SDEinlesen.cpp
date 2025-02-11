@@ -45,6 +45,12 @@ void SetupSD()
   }
 }
 
+void disableSD() 
+{
+  digitalWrite(SD_CS, HIGH);  // SD-Karte deaktivieren
+  SPI.end();  // SPI-Bus freigeben (optional)
+}
+
 void SDLokEinlesen()
 {
     File csvFile = SD.open(lokDateiPfad.c_str());
@@ -184,36 +190,3 @@ void SDWeicheEinlesen()
   weichenAnzahl = i;
 }
 
-/*
-const char* lokCharArray[100][MAX_SPALTEN_LOK/2] = 
-{
-  {"/", "/", "/", "/", "/", "/", "/", "/", "/", "/"},
-  {"Mallet", "Licht", "Sound", "Steckdose", "Dampf", "/", "/", "/", "/", "/"},
-  {"Diesellok V51", "Licht", "Sound", "Steckdose", "Dampf", "/", "/", "/", "/", "/"},
-  {"Kokodil", "Licht", "Sound", "Steckdose", "Dampf", "/", "/", "/", "/", "/"},
-  {"Diesellok D10", "Licht", "Rundum-Licht", "Entkuppler H", "Entkuppler V", "/", "/", "/", "/", "/"},
-  {"Lok g2", "L 2 / F 1", "L 2 / F 2", "L 2 / Z", "/", "/", "/", "/", "/", "/"},
-  {"/", "/", "/", "/", "/", "/", "/", "/", "/", "/"}
-};
-
-int intArray[100][MAX_SPALTEN_LOK/2] =
-{
-  {0,0,0,0,0,0,0,0,0,0},
-  {4,0,1,2,3,0,0,0,0,0},
-  {5,0,1,2,3,4,5,6,7,8},
-  {6,0,1,2,3,4,5,6,7,8},
-  {10,0,1,2,3,4,0,0,0,0},
-  {3,0,1,2,3,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0}
-};
-
-const char* weicheCharArray[50] =
-{
-  "Weiche 1","Weiche 2","Weiche 3","Signal 1","-------",
-};
-
-int weicheIntArray[50] =
-{
-  129,130,131,132,133,
-};
-*/

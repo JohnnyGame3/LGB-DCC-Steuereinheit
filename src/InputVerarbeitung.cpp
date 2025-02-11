@@ -50,7 +50,7 @@ bool EncoderButtonGedrueckt()
 }
 
 // Funktion zur Initialisierung des Encoders
-void EncoderSetup()
+void SetupEncoder()
 {
   rotaryEncoder.begin();  // Encoder starten
   rotaryEncoder.setup(readEncoderISR);  // Interrupt für den Encoder einrichten

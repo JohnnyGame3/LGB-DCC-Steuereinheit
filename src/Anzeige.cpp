@@ -24,9 +24,10 @@ bool testAktualisierung = false;
 Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCK, -1);
 
 
-void displaySetup() 
+void DisplaySetup() 
 {
-  //SPI.beginTransaction(SPISettings(40000000, MSBFIRST, SPI_MODE0)); // 40 MHz
+  SPI.begin();  // SPI-Bus neu starte
+  SPI.beginTransaction(SPISettings(40000000, MSBFIRST, SPI_MODE0)); // 40 MHz
   tft.init(TFT_HOEHE, TFT_BREITE);
   tft.setRotation(1);
   tft.fillScreen(ST77XX_BLACK);

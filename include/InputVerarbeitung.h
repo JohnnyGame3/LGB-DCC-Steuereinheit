@@ -9,7 +9,7 @@
 
 int EncoderEinlesen(int minValue, int maxValue, int startWert);  // Funktion zum Einlesen des Encoder-Wertes
 void IRAM_ATTR readEncoderISR();    // Interrupt Service Routine (ISR) für den Encoder
-void EncoderSetup();    // Funktion zur Initialisierung des Encoders
+void SetupEncoder();    // Funktion zur Initialisierung des Encoders
 bool EncoderButtonGedrueckt();
 
 

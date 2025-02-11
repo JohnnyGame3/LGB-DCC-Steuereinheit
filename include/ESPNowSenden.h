@@ -4,8 +4,9 @@
 #include <esp_now.h>
 #include <ArduinoJson.h>
 #include "defines.h"
+#include <WiFi.h>
 
-
+void SetupESP_NOW();
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
 
 void SerialisierenUndSenden(LOK &lok); 
