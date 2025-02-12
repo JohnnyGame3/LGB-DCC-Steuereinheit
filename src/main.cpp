@@ -4,13 +4,11 @@
 #include "InputVerarbeitung.h"
 #include "Anzeige.h"
 
-bool taskStarten = false;
-
 
 // Funktion für die erste Loop (Core 0)
 void LoopCore0DCC(void *parameter)
 {
-  while (taskStarten)
+  while (true)
   {
     EingabeErkennen();
     vTaskDelay(3 / portTICK_PERIOD_MS);  // 5ms Pause
@@ -20,7 +18,7 @@ void LoopCore0DCC(void *parameter)
 // Funktion für die zweite Loop (Core 1)
 void LoopCore1ESPNow(void *parameter)
 {
-  while(taskStarten)
+  while(true)
   {
     DisplayAnzeignAuswahl();
     vTaskDelay(1 / portTICK_PERIOD_MS);  // 10ms Pause
@@ -56,17 +54,18 @@ void setup()
   pinMode(TASTER_LOK2_AKTIV,INPUT_PULLUP);
   pinMode(POTI, INPUT_PULLUP);
 
-  SetupSD();
-  delay(1000);
+  SetupSD();  // SPI für den Kartenleser initialisieren
+  delay(100); // Warten, bis der SD-Kartenleser bereit ist
 
-  SDLokEinlesen();
-  SDWeicheEinlesen();
+  SDLokEinlesen();  // Einlesen der Lok-Datei
+  SDWeicheEinlesen(); // Einlesen der Weichen-Datei
 
-  disableSD();
+  delay(200); // Warten bis die Dateinen eingelesen sind
+  disableSD();  // SPD des Kartenllesers deaktivieren
+  delay(100); // Warten bis der Kartenleser deaktiviert ist
 
-  // Display initialisieren
-  DisplaySetup();
-  delay(50); 
+  DisplaySetup();  // Display initialisieren
+
 
   SetupEncoder();
 
@@ -75,7 +74,7 @@ void setup()
   CreateTask(LoopCore1ESPNow, "TaskCore1", 10000, 1, 1); // Task auf Core 1
 
   SetupESP_NOW();
-  taskStarten = true;
+  delay(1000);  // Warten bis alles bereit ist 
 }
 
 
