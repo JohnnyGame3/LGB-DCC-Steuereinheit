@@ -36,7 +36,7 @@ void SetupSD()
       break;
     }
     //Serial.println("SD-Karte nicht erkannt, neuer Versuch in 500ms...");
-    delay(500);
+    //delay(500);
   }
 
   if (!sdInit) 
@@ -45,7 +45,7 @@ void SetupSD()
   }
 }
 
-void disableSD() 
+void DisableSD() 
 {
   digitalWrite(SD_CS, HIGH);  // SD-Karte deaktivieren
   SPI.end();  // SPI-Bus freigeben (optional)

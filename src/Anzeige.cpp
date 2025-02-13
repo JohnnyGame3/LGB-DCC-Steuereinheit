@@ -24,7 +24,7 @@ bool testAktualisierung = false;
 Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCK, -1);
 
 
-void DisplaySetup() 
+void SetupDisplay() 
 {
   SPI.begin();  // SPI-Bus neu starte
   SPI.beginTransaction(SPISettings(40000000, MSBFIRST, SPI_MODE0)); // 40 MHz

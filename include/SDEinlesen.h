@@ -9,7 +9,7 @@
 
 int Array1DLaenge(const char* Array[]);
 void SetupSD();
-void disableSD(); 
+void DisableSD(); 
 void SDLokEinlesen();
 void SDWeicheEinlesen();
 

@@ -12,7 +12,7 @@
 #include <Adafruit_ST7789.h>
 #include <SPI.h>
 
-void DisplaySetup();
+void SetupDisplay();
 int getWrappedIndex(int aktuellerIndex, int offset, int minIndex, int maxIndex); 
 
 

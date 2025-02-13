@@ -7,6 +7,9 @@
 #include "WEICHE.h"
 #include <string> // Für std::string
 
+
+const uint32_t RESET_TIMEOUT = 1800;  // Variable für die Wartezeit (30 Minuten in Sekunden)
+
 // Ziel-MAC-Adresse
 const uint8_t receiverAddress[] = {0x98, 0x3D, 0xAE, 0xEB, 0x04, 0x74};  // Mac Adresse des Empfänger esp´s Muss geändert werden
 
