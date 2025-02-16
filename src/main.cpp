@@ -47,7 +47,7 @@ void LoopCore0DCC(void *parameter)
   while (true)
   {
     EingabeErkennen();
-    vTaskDelay(3 / portTICK_PERIOD_MS);  // 5ms Pause
+    vTaskDelay(35 / portTICK_PERIOD_MS);  // 5ms Pause
   }
 }
  
@@ -58,7 +58,7 @@ void LoopCore1ESPNow(void *parameter)
   while(true)
   {
     DisplayAnzeignAuswahl();
-    vTaskDelay(2 / portTICK_PERIOD_MS);  // 10ms Pause
+    vTaskDelay(25 / portTICK_PERIOD_MS);  // 10ms Pause
   }
 }
 

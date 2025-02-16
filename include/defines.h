@@ -13,6 +13,8 @@ const uint32_t RESET_TIMEOUT = 1800;  // Variable für die Wartezeit (30 Minuten
 // Ziel-MAC-Adresse
 const uint8_t receiverAddress[] = {0x98, 0x3D, 0xAE, 0xEB, 0x04, 0x74};  // Mac Adresse des Empfänger esp´s Muss geändert werden
 
+extern bool espNowConnected;  // Globale Variable für die Verbindung zu ESP-NOW
+
 //const uint8_t receiverAddress[] = {0x93, 0x3D, 0xAE, 0xEC, 0xBE, 0xDC};
 
 // Array Constanten
@@ -69,16 +71,17 @@ const int ROTARY_ENCODER_VCC_PIN = -1;
 const int  ROTARY_ENCODER_STEPS = 4;
 
 // TFT Display
-const int TFT_DC = 38;
-const int TFT_CS = 37;
-const int TFT_MOSI = 11;
-const int TFT_SCK = 12;
+const int TFT_DC = 38;  // Data/Command für TFT-Display
+const int TFT_CS = 37;  // Chip Select für TFT-Display
+const int TFT_MOSI = 11;  // SPI MOSI (gemeinsam mit SD-Karte)
+const int TFT_SCK = 12;  // SPI SCK (gemeinsam mit SD-Karte)
+const int TFT_RST = 36;  // Reset für TFT-Display
 
 // SD-Kartenleser (SPI)
 const int SD_MISO = 13;    // SPI MISO
 const int SD_MOSI = 11;    // SPI MOSI (gemeinsam mit TFT)
 const int SD_SCK = 12;     // SPI SCK (gemeinsam mit TFT)
-const int SD_CS = 3;     // Chip Select für SD-Karte
+const int SD_CS = 3;    // Chip Select für SD-Karte
 #pragma endregion
 
 // Variablen Für schalt-Zustände

@@ -21,14 +21,14 @@ bool l2Zs = false;
 
 bool testAktualisierung = false;
 
-Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCK, -1);
+Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCK, TFT_RST);
 
 
 void SetupDisplay() 
 {
-  SPI.begin();  // SPI-Bus neu starte
-  SPI.beginTransaction(SPISettings(40000000, MSBFIRST, SPI_MODE0)); // 40 MHz
+  SPI.begin();  // SPI-Bus neu starten
   tft.init(TFT_HOEHE, TFT_BREITE);
+  SPI.beginTransaction(SPISettings(40000000, MSBFIRST, SPI_MODE0)); // 40 MHz
   tft.setRotation(1);
   tft.fillScreen(ST77XX_BLACK);
   tft.setTextColor(ST77XX_WHITE);
@@ -36,63 +36,93 @@ void SetupDisplay()
 
 
 
-
-// Methode zur Berechnung des zyklischen Index
+//Methode zur Berechnung eines zyklischen Indexes innerhalb eines bestimmten Bereichs.
 int getWrappedIndex(int aktuellerIndex, int offset, int minIndex, int maxIndex) 
 {
-  int newIndex = aktuellerIndex + offset;
-  if (newIndex > maxIndex) newIndex = minIndex;
-  if (newIndex < minIndex) newIndex = maxIndex;
-  return newIndex;
+    // Berechne den neuen Index durch Addition des Offsets
+    int newIndex = aktuellerIndex + offset;
+
+    // Falls der neue Index den maximalen Wert überschreitet, setze ihn auf den minimalen Wert
+    if (newIndex > maxIndex) newIndex = minIndex;
+
+    // Falls der neue Index kleiner als der minimale Wert ist, setze ihn auf den maximalen Wert
+    if (newIndex < minIndex) newIndex = maxIndex;
+
+    // Gib den berechneten Index zurück
+    return newIndex;
 }
 
 
-void GitterZeichnen()
+
+// Methode um das Auswahl-Menü Vor Zu Zeichnen
+void MenueVorZeichnen(uint16_t trennLinienFarbe)
 {
-    // Trennlinie 1 (Horizontal)
-  tft.drawLine(0,80,320,80,ST77XX_CYAN);  
+  tft.fillRect(0,0,TFT_BREITE,TFT_HOEHE/3,ST77XX_BLACK);
+  tft.drawLine(0,TFT_HOEHE/3,TFT_BREITE,TFT_HOEHE/3,trennLinienFarbe);  // Trennlinie 1 (Horizontal)
 
-    // Trennlinie 2 (Horizontal)
-  tft.drawLine(0,160,320,160,ST77XX_CYAN);
-
-    // Trennlinie 1 (Vertikal (Links))
-  tft.drawLine(80,0,80,240,ST77XX_CYAN);
-
-    // Trennlinie 2 (Vertikal (Rechts))
-  tft.drawLine(240,0,240,240,ST77XX_CYAN);
-
-    // Trennlinie 3 (Vertikal (Mitte))
-  tft.drawLine(160,80,160,240,ST77XX_CYAN);
+  tft.fillRect(0,(TFT_HOEHE/3)+1,TFT_BREITE,(TFT_HOEHE/3)-1,ST77XX_BLACK);
+  tft.drawLine(0,(TFT_HOEHE/3)*2,TFT_BREITE,(TFT_HOEHE/3)*2,trennLinienFarbe);  // Trennlinie 2 (Horizontal)
+  
+  tft.fillRect(0,(TFT_HOEHE/3)*2+1,TFT_BREITE,(TFT_HOEHE/3)-1,ST77XX_BLACK);
 }
+
+
+// Methode zur Anzeige eines Textes an einer bestimmten Position mit variabler Farbe.
+void DruckeTextMitFarbe(int x, int y, const char* text, bool bedingung) 
+{
+  // Setze den Cursor an die gewünschte Position
+  tft.setCursor(x, y);
+
+  // Wähle die Textfarbe basierend auf der Bedingung
+  // Falls "bedingung" true ist → ROT, sonst → WEISS
+  if(bedingung) {tft.setTextColor(ST77XX_RED);}
+
+  // Drucke den Text auf das Display
+  tft.print(text);
+
+  // Setze die Textfarbe zurück auf Weiß (Standard)
+  tft.setTextColor(ST77XX_WHITE);
+}
+
+
+
+// Methode zur Anzeige eines Status an einer bestimmten Position auf dem Display.
+void StatusAnzeigen(int x, int y, const char* text1, const char* text2, bool status)
+{
+  // Setze den Cursor an die gewünschte Position
+  tft.setCursor(x, y);
+
+  // Lösche vorherigen Text, indem beide möglichen Werte in schwarzer Farbe gezeichnet werden
+  tft.setTextColor(ST77XX_BLACK);
+  tft.print(text1);
+  tft.setCursor(x, y);
+  tft.print(text2);
+
+  // Setze den Cursor erneut für die finale Anzeige
+  // Falls "bedingung" true ist → ROT, sonst → WEISS
+  tft.setTextColor(status ? ST77XX_GREEN : ST77XX_RED);
+  tft.setCursor(x, y);
+
+  // Zeige den aktuellen Status an
+  tft.print(status ? text1 : text2);
+  tft.setTextColor(ST77XX_WHITE);
+}
+
 
 void ErsteLokZeile()
-{  
-  tft.setCursor(0,120);
+{ 
   if(geschwLok1Aktiv){tft.setTextColor(ST77XX_GREEN);}  // Andert die Textfarbe auf Grün wenn die lok angewählt ist
-  if(auswahlHauptAnzeige == 4) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 2 = Mitte,Links) 
-  tft.print(lokCharArray[l1][0]);
-  tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
+  DruckeTextMitFarbe(0, 120, lokCharArray[l1][0], auswahlHauptAnzeige == 4); 
 
-
-  tft.setCursor((80*3)+3,120);
-  if(auswahlHauptAnzeige == 1) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Mitte,Rechts)
-  tft.println(lokCharArray[l1][l1z]);
-  tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
+  DruckeTextMitFarbe((80*3)+3, 120, lokCharArray[l1][l1z], auswahlHauptAnzeige == 1); 
 }
 
 void ZweiteLokZeile()
 {
-  tft.setCursor(0,172);
   if(geschwLok2Aktiv){tft.setTextColor(ST77XX_GREEN);}  // Andert die Textfarbe auf Grün wenn die lok angewählt ist
-  if(auswahlHauptAnzeige == 3) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 3 = Unten,Links)
-  tft.print(lokCharArray[l2][0]);
-  tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
+  DruckeTextMitFarbe(0, 172, lokCharArray[l2][0], auswahlHauptAnzeige == 3); 
 
-
-  tft.setCursor((80*3)+3,172);
-  if(auswahlHauptAnzeige == 0) {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 6 = Unten,Rechts)
-  tft.println(lokCharArray[l2][l2z]);
-  tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
+  DruckeTextMitFarbe((80*3)+3, 172, lokCharArray[l2][l2z], auswahlHauptAnzeige == 0); 
 }
 
 void GeschwindigkeitAnzeigen()
@@ -112,29 +142,16 @@ void GeschwindigkeitAnzeigen()
 void StandardAnzeigeVorZeichnen()
 {
 
-   // Oberen Bereich schwarz färben
-  tft.fillRect(0, 0, TFT_BREITE, 80, ST77XX_BLACK);
-  // Erste horizontale Trennlinie
-  tft.drawLine(0, 80, 320, 80, ST77XX_CYAN);
+  MenueVorZeichnen(ST77XX_CYAN);
 
+  // Trennlinie 1 (Vertikal (Links))
+  tft.drawLine(80,0,80,TFT_HOEHE,ST77XX_CYAN);
 
-  // Bereich Mitte links
-  tft.fillRect(0, 81, TFT_BREITE, 80, ST77XX_BLACK);
-  // Zweite horizontale Trennlinie
-  tft.drawLine(0, 160, 320, 160, ST77XX_CYAN);
+  // Trennlinie 2 (Vertikal (Rechts))
+  tft.drawLine(240,0,240,TFT_HOEHE,ST77XX_CYAN);
 
-
-  // Bereich unten links
-  tft.fillRect(0, 161, TFT_BREITE, 80, ST77XX_BLACK);
-
-      // Trennlinie 1 (Vertikal (Links))
-  tft.drawLine(80,0,80,240,ST77XX_CYAN);
-
-    // Trennlinie 2 (Vertikal (Rechts))
-  tft.drawLine(240,0,240,240,ST77XX_CYAN);
-
-    // Trennlinie 3 (Vertikal (Mitte))
-  tft.drawLine(160,80,160,240,ST77XX_CYAN);
+  // Trennlinie 3 (Vertikal (Mitte))
+  tft.drawLine(160,80,160,TFT_HOEHE,ST77XX_CYAN);
 
 
   // Text "Geschw.: " schreiben
@@ -145,7 +162,6 @@ void StandardAnzeigeVorZeichnen()
 
 
   // Überschriften schreiben
-  tft.setTextColor(ST77XX_WHITE);
   tft.setCursor(0, 90);
   tft.print("Lok");
 
@@ -190,19 +206,9 @@ void StandardAnzeige()
     {
       if(standardAnzeigeErsterZyklus || auswahlHauptAnzeige != -1 || radInaktivEinzelAktualisierung)
       {
-        // Zeile 1 Weiche 1| Geschwindigkeit | Weiche 2
-        tft.setCursor(15,40);
-        if(auswahlHauptAnzeige == 5) 
-        {tft.setTextColor(ST77XX_RED);}  // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 1 = Oben,Links)
-        tft.print(weicheCharArray[w1]);     // Name Weiche/Signal/... 1
-        tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
+        DruckeTextMitFarbe(15, 40, weicheCharArray[w1], auswahlHauptAnzeige == 5); 
 
-
-        tft.setCursor((80*3)+18,40);
-        if(auswahlHauptAnzeige == 2)
-        {tft.setTextColor(ST77XX_RED);} // Andert die Anzeige auf Rot Wenn ich mit dem "Cörser" hier drauf bin (Pos 4 = Oben,Rechts)
-        tft.print(weicheCharArray[w2]);     // Name Weiche/Signal/... 2
-        tft.setTextColor(ST77XX_WHITE);   // ändert die Anzeige Zurück auf Weiß
+        DruckeTextMitFarbe((80*3)+18, 40, weicheCharArray[w2], auswahlHauptAnzeige == 2); 
 
         radInaktivEinzelAktualisierung = false;
       }
@@ -220,108 +226,40 @@ void StandardAnzeige()
 
     if(tasterBetaetigt || standardAnzeigeErsterZyklus)
     {
-      // ______________Weichen Aktualisieren_______________________
-      //tft.fillRect(0, 56, 78, 16, ST77XX_BLACK); // Löscht ein 40x25 Pixel großes Rechteck ab (185, 25)
-      tft.setCursor(30,60);
+      //tft.setTextSize(2);
+      // Zustand Weiche/Signal/... 1
+      if(strncmp(weicheCharArray[w1], "Signal",6) == 0 && strlen(weicheCharArray[w1]) >= 6) // Wenn Weiche 1 ein Signal ist
+      {
+        StatusAnzeigen(29, 60, "Ein", "Aus", w1s);
+      }
+      else
+      {
+        StatusAnzeigen(30, 60, "/", "|", w1s);
+      }
 
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("|");
-      tft.setCursor(30,60);
-      tft.print("/");
-      tft.setTextColor(ST77XX_WHITE); 
-      tft.setCursor(30,60);
-
-      tft.print(w1s ? "|":"/"); // Zustand Weiche/Signal/... 1
-
-
-      //tft.fillRect((80*3)+1, 56, 78, 16, ST77XX_BLACK); // Löscht ein 40x25 Pixel großes Rechteck ab (185, 25)
-      tft.setCursor(270,60);
-
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("|");
-      tft.setCursor(270,60);
-      tft.print("/");
-      tft.setTextColor(ST77XX_WHITE); 
-      tft.setCursor(270,60);
-
-      tft.print(w2s ? "|":"/"); // Zustand Weiche/Signal/... 2
-
-
-      // ____________LOK 1 Funktionen______________________________
-      //tft.fillRect((80) +1, 136, 78, 16, ST77XX_BLACK); // Löscht ein 40x25 Pixel großes Rechteck ab (185, 25)
-      tft.setCursor((80)+3,140);
-
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("Ein");
-            tft.setCursor((80)+3,140);
-      tft.print("Aus");
-      tft.setTextColor(ST77XX_WHITE);      
-      tft.setCursor((80)+3,140);
-
-      tft.print(l1F1s ? "Ein":"Aus");
-
-      //tft.fillRect((80*2) +1, 136, 78, 16, ST77XX_BLACK); // Löscht ein 40x25 Pixel großes Rechteck ab (185, 25)
-      tft.setCursor((80*2)+3,140);
       
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("Ein");
-      tft.setCursor((80*2)+3,140);
-      tft.print("Aus");
-      tft.setTextColor(ST77XX_WHITE);
-      tft.setCursor((80*2)+3,140);
+      // Zustand Weiche/Signal/... 2
+      if (strncmp(weicheCharArray[w2], "Signal", 6) == 0 && strlen(weicheCharArray[w2]) >= 6) 
+      {
+        StatusAnzeigen(269, 60, "Ein", "Aus", w2s);
+      }
+      else
+      {
+        StatusAnzeigen(270, 60, "/", "|", w2s);
+      }
 
-      tft.print(l1F2s ? "Ein":"Aus");
+      // LOK 1 Funktionen
+      StatusAnzeigen(80 + 3, 140, "Ein", "Aus", l1F1s);
+      StatusAnzeigen((80 * 2) + 3, 140, "Ein", "Aus", l1F2s);
+      StatusAnzeigen((80 * 3) + 3, 140, "Ein", "Aus", l1Zs);
 
-      //tft.fillRect((80*3) +1, 136, 78, 16, ST77XX_BLACK); // Löscht ein 40x25 Pixel großes Rechteck ab (185, 25)
-      tft.setCursor((80*3)+3,140);
+      // LOK 2 Funktionen
+      StatusAnzeigen(80 + 3, 190, "Ein", "Aus", l2F1s);
+      StatusAnzeigen((80 * 2) + 3, 190, "Ein", "Aus", l2F2s);
+      StatusAnzeigen((80 * 3) + 3, 190, "Ein", "Aus", l2Zs);
 
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("Ein");
-      tft.setCursor((80*3)+3,140);
-      tft.print("Aus");
-      tft.setTextColor(ST77XX_WHITE);
-      tft.setCursor((80*3)+3,140);
-
-      tft.print(l1Zs ? "Ein":"Aus");
-
-
-      // ______________LOK 2 Funktionen______________________
-      //tft.fillRect((80) +1, 186, 78, 16, ST77XX_BLACK); // Löscht ein 40x25 Pixel großes Rechteck ab (185, 25)
-      tft.setCursor((80)+3,190);
-
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("Ein");
-      tft.setCursor((80)+3,190);
-      tft.print("Aus");
-      tft.setTextColor(ST77XX_WHITE);
-      tft.setCursor((80)+3,190);
-
-      tft.print(l2F1s ? "Ein":"Aus");
-
-      //tft.fillRect((80*2) +1, 186, 78, 16, ST77XX_BLACK); // Löscht ein 40x25 Pixel großes Rechteck ab (185, 25)
-      tft.setCursor((80*2)+3,190);
-
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("Ein");
-      tft.setCursor((80*2)+3,190);
-      tft.print("Aus");
-      tft.setTextColor(ST77XX_WHITE);
-      tft.setCursor((80*2)+3,190);      
-
-      tft.print(l2F2s ? "Ein":"Aus");
-
-      //tft.fillRect((80*3) +1, 186, 78, 16, ST77XX_BLACK); // Löscht ein 40x25 Pixel großes Rechteck ab (185, 25)
-      tft.setCursor((80*3)+3,190);
-
-      tft.setTextColor(ST77XX_BLACK);
-      tft.print("Ein");
-      tft.setCursor((80*3)+3,190);
-      tft.print("Aus");
-      tft.setTextColor(ST77XX_WHITE);
-      tft.setCursor((80*3)+3,190);
-
-      tft.print(l2Zs ? "Ein":"Aus");
-
+      //tft.setTextSize(1);
+      
       tasterBetaetigt = false;
     }
 
@@ -329,17 +267,6 @@ void StandardAnzeige()
   }
 }
 
-// Methode um das Auswahl-Menü Vor Zu Zeichnen
-void AuswahlMenueVorZeichnen()
-{
-  tft.fillRect(0,0,TFT_BREITE,TFT_HOEHE/3,ST77XX_BLACK);
-  tft.drawLine(0,TFT_HOEHE/3,TFT_BREITE,TFT_HOEHE/3,ST77XX_RED);  // Trennlinie 1 (Horizontal)
-
-  tft.fillRect(0,(TFT_HOEHE/3)+1,TFT_BREITE,(TFT_HOEHE/3)-1,ST77XX_BLACK);
-  tft.drawLine(0,(TFT_HOEHE/3)*2,TFT_BREITE,(TFT_HOEHE/3)*2,ST77XX_RED);  // Trennlinie 2 (Horizontal)
-  
-  tft.fillRect(0,(TFT_HOEHE/3)*2+1,TFT_BREITE,(TFT_HOEHE/3)-1,ST77XX_BLACK);
-}
 
 int WeicheAendern(int arrayNr)
 {
@@ -347,7 +274,7 @@ int WeicheAendern(int arrayNr)
   int LetzterTemp = temp;
   startwertSetzen = false;
 
-  AuswahlMenueVorZeichnen();
+  MenueVorZeichnen(ST77XX_RED);
 
   int arrayLaenge = Array1DLaenge(weicheCharArray);
   
@@ -401,7 +328,7 @@ int LokAendern(int arrayNr)
   int LetzterTemp = temp;
   startwertSetzen = false;
 
-  AuswahlMenueVorZeichnen();
+  MenueVorZeichnen(ST77XX_RED);
 
   while(imAuswahlMenue)  // Evtl. Aktualisierungs    zeit imAuswahlMenue
   {
@@ -450,7 +377,7 @@ int ZusatzAendern(int lokNr, int arrayNr)
   int LetzterTemp = temp;
   startwertSetzen = false;
 
-  AuswahlMenueVorZeichnen();
+  MenueVorZeichnen(ST77XX_RED);
 
   while(imAuswahlMenue)  // Evtl. Aktualisierungs    zeit imAuswahlMenue
   {

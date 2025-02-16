@@ -99,28 +99,40 @@ bool DebounceTaster(int pin, int index)
   int offset = -280;    // Offset für den Nullpunkt (nach rechts verschoben)
   int nullpunkt = 2048 + offset; // Neuer Nullpunkt mit Offset
 
-// Methoder um den Poti einzulesen und den wert in -28 bis 28 zu mappen
-int PotiEinlesen(int pin)
-{
-  int potiWert = analogRead(pin); // Liest den Wert des Poti ein
-
-  int speed;
-
-  if (potiWert >= (nullpunkt - deadZone) && potiWert <= (nullpunkt + deadZone)) 
+  
+  int PotiEinlesen(int pin)
   {
-    speed = 0;
-  } 
-  else if (potiWert > (nullpunkt + deadZone)) 
-  {
-    speed = map(potiWert, nullpunkt + deadZone, 4095, 0, -28);
+    adcAttachPin(pin); // Stellt sicher, dass der ADC richtig genutzt wird
+    const int messungen = 10; // Anzahl der Messungen zur Mittelung
+    int summe = 0;
+  
+    for (int i = 0; i < messungen; i++) 
+    {
+      summe += analogRead(pin);
+      delay(2); // Kurze Verzögerung, um Rauschen zu minimieren
+    }
+  
+    int potiWert = summe / messungen; // Mittelwert berechnen
+  
+    int speed;
+  
+    if (potiWert >= (nullpunkt - deadZone) && potiWert <= (nullpunkt + deadZone)) 
+    {
+      speed = 0;
+    } 
+    else if (potiWert > (nullpunkt + deadZone)) 
+    {
+      speed = map(potiWert, nullpunkt + deadZone, 4095, 0, -28);
+    }
+    else 
+    {
+      speed = map(potiWert, 0, nullpunkt - deadZone, 28, 0);
+    }
+  
+    return speed;
   }
-  else 
-  {
-    speed = map(potiWert, 0, nullpunkt - deadZone, 28, 0);
-  }
+  
 
-  return speed;
-}
 
 // Erkennt die tastereingabe und sendet die neuen funktions/Geschw. Befehlle
 void EingabeErkennen()

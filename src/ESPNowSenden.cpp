@@ -2,6 +2,8 @@
 #include "ESPNowSenden.h"
 
 esp_now_peer_info_t peerInfo;
+bool espNowConnected = false;
+
 
 void SetupESP_NOW()
 {
@@ -13,6 +15,7 @@ void SetupESP_NOW()
   if (esp_now_init() != ESP_OK) 
   {
     //Serial.println("Fehler beim Initialisieren von ESP-NOW");
+    espNowConnected = false;
     return;
   }  
 
@@ -27,8 +30,10 @@ void SetupESP_NOW()
   if (esp_now_add_peer(&peerInfo) != ESP_OK) 
   {
     //Serial.println("Fehler beim Hinzufügen des Empfängers");
+    espNowConnected = false;
     return;
   }
+  espNowConnected = true;  // Setze auf true nach erfolgreichem Setup
 }
 
 // Callback für das Senden von Daten
