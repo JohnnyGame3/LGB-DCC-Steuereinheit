@@ -16,5 +16,5 @@ void LOK::toJson(JsonDocument &doc)
     doc["richtung"] = richtung;
 }
 
-LOK lok1(1, intArray[l1][0], 10, intArray[l1][1], false, true);
+LOK lok1(1, intArray[l1][0], 0, intArray[l1][1], false, true);
 LOK lok2(2, intArray[l2][0], 0, intArray[l2][1], false, true);

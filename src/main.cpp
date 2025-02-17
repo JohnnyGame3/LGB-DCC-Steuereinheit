@@ -3,43 +3,10 @@
 #include "ESPNowSenden.h"
 #include "InputVerarbeitung.h"
 #include "Anzeige.h"
-#include "esp_system.h"
-#include "nvs_flash.h"
-#include "nvs.h"
-#include "time.h"
 
 
-void startup() 
-{
-  // NVS Speicher initialisieren
-  nvs_flash_init();
-  nvs_handle_t nvs_handle;
-  nvs_open("storage", NVS_READWRITE, &nvs_handle);
 
-  // Zeitstempel aus NVS lesen
-  uint32_t lastBootTime = 0;
-  nvs_get_u32(nvs_handle, "last_boot", &lastBootTime);
 
-  // Aktuelle Zeit holen
-  uint32_t now = millis() / 1000;  // Zeit in Sekunden
-
-  // Debugging auskommentiert
-  // Serial.printf("Last Boot: %d sec ago\n", lastBootTime);
-  // Serial.printf("Now: %d sec\n", now);
-
-  if (lastBootTime == 0 || (now - lastBootTime) > RESET_TIMEOUT) {
-      // Serial.println("ESP war länger als festgelegte Zeit aus -> Reset...");
-      nvs_set_u32(nvs_handle, "last_boot", now);  // Neue Zeit speichern
-      nvs_commit(nvs_handle);
-      nvs_close(nvs_handle);
-      delay(2000);
-      esp_restart();  // ESP32-S3 zurücksetzen
-  } else {
-      // Serial.println("Kein Reset nötig.");
-  }
-
-  nvs_close(nvs_handle);
-}
 
 // Funktion für die erste Loop (Core 0)
 void LoopCore0DCC(void *parameter)
@@ -47,7 +14,7 @@ void LoopCore0DCC(void *parameter)
   while (true)
   {
     EingabeErkennen();
-    vTaskDelay(35 / portTICK_PERIOD_MS);  // 5ms Pause
+    vTaskDelay(5 / portTICK_PERIOD_MS);  // 5ms Pause
   }
 }
  
@@ -110,7 +77,7 @@ void setup()
   CreateTask(LoopCore1ESPNow, "TaskCore1", 10000, 1, 1); // Task auf Core 1
 
   SetupESP_NOW();
-  startup();  // Überprüfen ob ein Reset nötig ist
+
 }
 
 
