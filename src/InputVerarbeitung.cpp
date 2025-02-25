@@ -54,7 +54,7 @@ void SetupEncoder()
 {
   rotaryEncoder.begin();  // Encoder starten
   rotaryEncoder.setup(readEncoderISR);  // Interrupt für den Encoder einrichten
-  rotaryEncoder.setAcceleration(150);  // Beschleunigung für den Encoder setzen (Wert bestimmt die Reaktionsgeschwindigkeit)
+  rotaryEncoder.setAcceleration(0);  // Beschleunigung für den Encoder setzen (Wert bestimmt die Reaktionsgeschwindigkeit)
   //rotaryEncoder.isEncoderButtonClicked();
 }
 
