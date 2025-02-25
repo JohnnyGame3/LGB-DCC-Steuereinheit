@@ -7,7 +7,6 @@
 #include "SDEinlesen.h"
 #include "InputVerarbeitung.h"
 
-
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7789.h>
 #include <SPI.h>
@@ -46,9 +45,18 @@ void StatusAnzeigen(int x, int y, const char* text1, const char* text2, bool sta
 void ErsteLokZeile();
 void ZweiteLokZeile();
 void GeschwindigkeitAnzeigen();
+/**
+ * Methode zur Anzeige der Funktionen einer Lok an einer bestimmten Position auf dem Display.
+ * 
+ * @param x        X-Koordinate für die Anzeige der Funktionen.
+ * @param y        Y-Koordinate für die Anzeige der Funktionen.
+ * @param status1  Boolean-Wert für den Status der ersten Funktion.
+ * @param status2  Boolean-Wert für den Status der zweiten Funktion.
+ * @param statusZ  Boolean-Wert für den Status der Zusatzfunktion.
+ */
+void LokFunktionenAnzeigen(int x, int y, bool status1, bool status2, bool statusZ); 
 void StandardAnzeige();
 void StandardAnzeigeVorZeichnen();
-
 
 int WeicheAendern(int arrayNr);
 int LokAendern(int arrayNr);

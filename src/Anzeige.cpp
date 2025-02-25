@@ -138,6 +138,12 @@ void GeschwindigkeitAnzeigen()
   tft.setTextSize(1);
 }
 
+void LokFunktionenAnzeigen(int x, int y, bool status1, bool status2, bool statusZ) 
+{
+  StatusAnzeigen(x, y, "Ein", "Aus", status1);
+  StatusAnzeigen(x + 80, y, "Ein", "Aus", status2);
+  StatusAnzeigen(x + 160, y, "Ein", "Aus", statusZ);
+}
 
 void StandardAnzeigeVorZeichnen()
 {
@@ -249,14 +255,10 @@ void StandardAnzeige()
       }
 
       // LOK 1 Funktionen
-      StatusAnzeigen(80 + 3, 140, "Ein", "Aus", l1F1s);
-      StatusAnzeigen((80 * 2) + 3, 140, "Ein", "Aus", l1F2s);
-      StatusAnzeigen((80 * 3) + 3, 140, "Ein", "Aus", l1Zs);
+      LokFunktionenAnzeigen(80 + 3, 140, l1F1s, l1F2s, l1Zs);
 
       // LOK 2 Funktionen
-      StatusAnzeigen(80 + 3, 190, "Ein", "Aus", l2F1s);
-      StatusAnzeigen((80 * 2) + 3, 190, "Ein", "Aus", l2F2s);
-      StatusAnzeigen((80 * 3) + 3, 190, "Ein", "Aus", l2Zs);
+      LokFunktionenAnzeigen(80 + 3, 190, l2F1s, l2F2s, l2Zs);
 
       //tft.setTextSize(1);
       
