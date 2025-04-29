@@ -5,9 +5,6 @@
 #include "Anzeige.h"
 
 
-
-
-
 // Funktion für die erste Loop (Core 0)
 void LoopCore0DCC(void *parameter)
 {
